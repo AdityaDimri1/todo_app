@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="/add" class="btn add-btn">➕ Add New Task</a>
+
+<ul class="task-list">
+    {% for task in tasks %}
+        <li class="{% if task[4] == 'completed' %}completed{% endif %}">
+            <div class="task-info">
+                <strong>{{ task[1] }}</strong> - <small>{{ task[2] }}</small><br>
+                <small>Due: {{ task[3] }}</small>
+            </div>
+
+            <div class="task-actions">
+                {% if task[4] == 'pending' %}
+                    <form method="post" action="/api/tasks/{{ task[0] }}/complete" class="inline-form">
+                        <button type="submit" class="btn complete-btn">✔ Complete</button>
+                    </form>
+                    <form method="post" action="/api/tasks/{{ task[0] }}/delete" class="inline-form">
+                        <button type="submit" class="btn delete-btn">🗑 Delete</button>
+                    </form>
+                {% else %}
+                    <span class="status completed">✅ Completed</span>
+                    <form method="post" action="/api/tasks/{{ task[0] }}/delete" class="inline-form">
+                        <button type="submit" class="btn delete-btn">🗑 Delete</button>
+                    </form>
+                {% endif %}
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
